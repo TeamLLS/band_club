@@ -1,5 +1,6 @@
 package com.example.band_club.club;
 
+import com.example.band_club.club.command.ChangeClub;
 import com.example.band_club.club.command.CreateClub;
 import com.example.band_club.club.form.ClubResponseForm;
 import com.example.band_club.external.s3.S3Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ClubService {
 
@@ -17,7 +19,7 @@ public class ClubService {
     private final ClubStore clubStore;
     private final S3Service s3Service;
 
-    @Transactional
+
     public Long createClub(String username, CreateClub command){
 
         String imageKey;
@@ -49,4 +51,23 @@ public class ClubService {
         return new ClubResponseForm(club, imageResource);
     }
 
+
+    public void ChangeClubInfo(String username, ChangeClub command){
+
+
+        Club club = clubStore.find(command.getClubId());
+
+        String imageKey;
+        if(command.isImageChanged()){
+            if(command.getImage()==null || command.getImage().isEmpty()){
+                imageKey = "common/club/default.png";
+            }else{
+                imageKey = s3Service.saveImage("club/" + command.getName() + "/image", "main", command.getImage());
+            }
+
+            command.setImageKey(imageKey);
+        }
+
+        club.changeInfo(command);
+    }
 }

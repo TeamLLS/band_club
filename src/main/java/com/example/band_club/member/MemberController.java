@@ -3,6 +3,7 @@ package com.example.band_club.member;
 import com.example.band_club.member.form.ClubMemberItemForm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

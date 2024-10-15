@@ -2,7 +2,6 @@ package com.example.band_club.club;
 
 import com.example.band_club.club.command.CreateClub;
 import com.example.band_club.club.form.ClubResponseForm;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,4 +39,9 @@ public class ClubController {
         return ResponseEntity.ok().body(response);
     }
 
+
+    @PatchMapping("/{clubId}")
+    public ResponseEntity<?> changeUserInfo(@PathVariable Long clubId){
+        return ResponseEntity.ok().build();
+    }
 }

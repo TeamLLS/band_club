@@ -1,5 +1,6 @@
 package com.example.band_club.club;
 
+import com.example.band_club.club.command.ChangeClub;
 import com.example.band_club.club.command.CreateClub;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -49,5 +50,24 @@ public class Club {
 
     public void memberNumDecreased(){
         memberNum--;
+    }
+
+    public void changeInfo(ChangeClub command){
+
+        if(command.isImageChanged()){
+            this.image=command.getImageKey();
+        }
+        if(command.isContactInfoChanged()){
+            this.contactInfo=command.getContactInfo();
+        }
+        if(command.isDescriptionChanged()){
+            this.description=command.getDescription();
+        }
+        if(command.isNameChanged()){
+            this.name=command.getName();
+        }
+        if(command.isStatusChanged()){
+            this.status=command.getStatus();
+        }
     }
 }
