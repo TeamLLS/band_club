@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ClubResponseForm {
+public class ClubDto {
 
     private Long clubId;
     private String name;
@@ -17,7 +17,7 @@ public class ClubResponseForm {
     private String status;
     private Integer memberNum;
 
-    public ClubResponseForm(Club club, String imageResource) {
+    public ClubDto(Club club, String imageResource) {
         this.clubId = club.getId();
         this.name = club.getName();
         this.description = club.getDescription();

@@ -1,7 +1,7 @@
 package com.example.band_club.club;
 
 import com.example.band_club.club.command.CreateClub;
-import com.example.band_club.club.form.ClubResponseForm;
+import com.example.band_club.club.form.ClubDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public class ClubController {
 
     @GetMapping("/{clubId}")
     public ResponseEntity<?> getClubInfo(@PathVariable Long clubId){
-        ClubResponseForm clubInfo = clubService.getClubInfo(clubId);
+        ClubDto clubInfo = clubService.getClubInfo(clubId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("clubInfo", clubInfo);

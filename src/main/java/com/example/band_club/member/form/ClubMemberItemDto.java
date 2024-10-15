@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ClubMemberItemForm {
+public class ClubMemberItemDto {
 
     private Long clubId;
     private Long memberId;
@@ -14,7 +14,7 @@ public class ClubMemberItemForm {
     private String name;
     private String role;
 
-    public ClubMemberItemForm(Member member, String imageResource) {
+    public ClubMemberItemDto(Member member, String imageResource) {
         this.clubId = member.getClub().getId();
         this.memberId = member.getId();
         this.image = imageResource;

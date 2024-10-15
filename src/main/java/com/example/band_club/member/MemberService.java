@@ -7,7 +7,9 @@ import com.example.band_club.external.feignClient.UserProfile;
 import com.example.band_club.external.feignClient.UserServiceClient;
 import com.example.band_club.external.s3.S3Service;
 import com.example.band_club.member.command.CreateMember;
-import com.example.band_club.member.form.ClubMemberItemForm;
+import com.example.band_club.member.form.ClubMemberItemDto;
+import com.example.band_club.member.form.MemberDto;
+import com.example.band_club.policy.MemberRoleAccessPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +35,8 @@ public class MemberService {
 
     public void registerRegular(String username, CreateMember command){
 
-        Member requester = memberStore.findByClubIdAndUsername(command.getClubId(), username);
-        if(requester.getRole().getRank()<2){
+        Member requester = memberStore.findMemberByUsername(command.getClubId(), username);
+        if(!MemberRoleAccessPolicy.checkMemberRole(requester, Role.MANAGER)){
             throw new RuntimeException();
         }
         Club targetClub = clubStore.find(command.getClubId());
@@ -55,8 +57,16 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<ClubMemberItemForm> findClubMemberList(String username, int pageNo){
-        return memberStore.findListWithClubByUsername(username, pageNo).stream()
-                .map(m -> new ClubMemberItemForm(m, s3Service.getProduction() + "/" + m.getClub().getImage())).toList();
+    public List<ClubMemberItemDto> findClubMemberList(String username, int pageNo){
+        return memberStore.findClubMemberListByUsername(username, pageNo).stream()
+                .map(m -> new ClubMemberItemDto(m, s3Service.getProduction() + "/" + m.getClub().getImage())).toList();
     }
+
+
+    @Transactional(readOnly = true)
+    public MemberDto getMemberInfo(Long clubId, String username){
+        Member find = memberStore.findMemberByUsername(clubId, username);
+        return new MemberDto(find);
+    }
+
 }

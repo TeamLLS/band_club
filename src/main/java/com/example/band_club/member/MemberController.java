@@ -1,9 +1,7 @@
 package com.example.band_club.member;
 
-import com.example.band_club.member.form.ClubMemberItemForm;
-import lombok.Getter;
+import com.example.band_club.member.form.ClubMemberItemDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,7 @@ public class MemberController {
 
     @GetMapping("/club/list")
     public ResponseEntity<?> getClubMemberList(@RequestHeader String username,@RequestParam int pageNo){
-        List<ClubMemberItemForm> clubMemberList = memberService.findClubMemberList(username, pageNo);
+        List<ClubMemberItemDto> clubMemberList = memberService.findClubMemberList(username, pageNo);
 
         Map<String, Object> response = new HashMap<>();
         response.put("list", clubMemberList);

@@ -1,11 +1,6 @@
 package com.example.band_club.member;
 
-import com.example.band_club.club.Club;
-import com.example.band_club.club.event.ClubCreated;
-import com.example.band_club.club.event.ClubEvent;
-import com.example.band_club.club.event.ClubEventJpo;
 import com.example.band_club.member.event.MemberCreated;
-import com.example.band_club.member.event.MemberEvent;
 import com.example.band_club.member.event.MemberEventJpo;
 import com.example.band_club.member.event.MemberEventRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +28,13 @@ public class MemberStore {
     }
 
     @Transactional(readOnly = true)
-    public Member findByClubIdAndUsername(Long clubId, String username){
+    public Member findMemberByUsername(Long clubId, String username){
         return memberRepository.findByClubIdAndUsername(clubId, username).orElseThrow();
     }
 
 
     @Transactional(readOnly = true)
-    public List<Member> findListWithClubByUsername(String username, int pageNo){
+    public List<Member> findClubMemberListByUsername(String username, int pageNo){
 
         Pageable pageable = PageRequest.of(pageNo, 2);
 
