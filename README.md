@@ -94,7 +94,7 @@ header: {
 ### 응답
 ```
 body: {
-    "list": [
+    list: [
         {
             clubId: 클럽 ID, (Long)
             memberId: 회원 ID, (Long)
@@ -143,7 +143,7 @@ header: {
 ### 응답
 ```
 body: {
-    "list": [
+    list: [
         {
             memberId: 회원 ID, (Long)
             clubId: 클럽 ID, (Long)
