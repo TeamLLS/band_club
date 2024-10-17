@@ -58,15 +58,13 @@ header: {
 ### 응답
 ```
 body: {
-  clubInfo: {
-    clubId: 클럽 ID, (Long)
-    name: 클럽 이름, (String)
-    description: 클럽 설명, (String)
-    image: 이미지 리소스 url,
-    contactInfo: 컨택 정보, (String)
-    status: 클럽 상태, (String)
-    memberNum: 회원 수 (Integer)
-  }
+  clubId: 클럽 ID, (Long)
+  name: 클럽 이름, (String)
+  description: 클럽 설명, (String)
+   image: 이미지 리소스 url,
+   contactInfo: 컨택 정보, (String)
+   status: 클럽 상태, (String)
+   memberNum: 회원 수 (Integer)
 }
 ```
 
