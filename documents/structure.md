@@ -153,23 +153,54 @@ band_club
 |            |status|MemberStatus|Member상태|=TERMINATED|
 
 
+# 4. 예외
 
-# 4. 주요 컴포넌트
+
+| Exception | 속성 | 타입 | 설명 | 비고 |  
+|-----------|------|------|------|------|
+|NotMemberException|      |      |해당 Member가 활동 중이 아님을 표시|RuntimeException, 반환코드=404|
+|                  |clubId|Long|Club Id||
+|                  |usernmae|String|username|
+
+| Exception | 속성 | 타입 | 설명 | 비고 |  
+|-----------|------|------|------|------|
+|NotActiveMemberException|      |      |해당 User가 Club의 Member가 아님을 표시|RuntimeException, 반환코드=403|
+|                  |memberId|Long|Member Id||
+|                  |status|String|Member 상태|
+
+
+| Exception | 속성 | 타입 | 설명 | 비고 |  
+|-----------|------|------|------|------|
+|InsufficientMemberException|      |      |해당 Member가 접근권한이 없음을 표시|RuntimeException, 반환코드=403|
+|                           |memberId|Long|Member Id||
+|                           |role|String|Member 권한|
+
+
+
+| Exception | 속성 | 타입 | 설명 | 비고 |  
+|-----------|------|------|------|------|
+|DuplicatedMemberException|      |      |해당 User가 이미 Club의 Member임을 표시|RuntimeException, 반환코드=409|
+|                  |clubId|Long|Club Id||
+|                  |usernmae|String|username|
+
+
+
+# 5. 주요 컴포넌트
 
 | 컴포넌트 | 설명 | 비고 |  
 |----------|------|------|
-|OauthAuthenticator|Oauth 인증 목적 utils||
-|UserInfo|Oauth 유저 정보 저장||
-|RedisSercie|Redis 접근 목적 utils||
+|UserServiceClient|User server 접근 목적 utils|FeignClient 기반 rest api 통신|
 |S3Service|S3 접근 목적 utils||
-|JwtUtils|JWT 생성, 인증 목적 utils||
-|UserController|User 관련 엔드포인트||
-|UserService|User 관련 비즈니스 로직 수행||
-|UserRepository|User 관련 DB 접근||
+|ClubController|Club 관련 엔드포인트||
+|ClubService|Club 관련 비즈니스 로직 수행||
+|ClubStore|Club 관련 DB 접근||
+|MemberController|Member 관련 엔드포인트||
+|MemberService|Member 관련 비즈니스 로직 수행||
+|MemberStore|Member 관련 DB 접근||
 
 
 
 
-# 4. ERD
+# 6. ERD
 
 ![a2](https://github.com/user-attachments/assets/f0cb684b-b475-411c-9414-20cead205c5a)
