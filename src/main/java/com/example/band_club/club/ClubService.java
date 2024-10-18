@@ -9,6 +9,7 @@ import com.example.band_club.member.Role;
 import com.example.band_club.member.command.CreateMember;
 import com.example.band_club.member.form.MemberDto;
 import com.example.band_club.policy.MemberRoleAccessPolicy;
+import com.example.band_club.policy.MemberStatusAccessPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,7 @@ public class ClubService {
 
         Club saved = clubStore.save(username, newClub);
 
-        memberService.registerOwner(username, new CreateMember(saved, username));
+        memberService.registerOwner(username, new CreateMember(username,saved));
 
         return saved.getId();
     }
@@ -55,14 +56,13 @@ public class ClubService {
     }
 
 
-    public void ChangeClubInfo(String username, ChangeClub command){
+    public void changeClubInfo(String username, ChangeClub command){
 
         Club club = clubStore.find(command.getClubId());
-        MemberDto find = memberService.getMemberInfo(club.getId(), username);
+        MemberDto requester = memberService.getMemberInfo(club.getId(), username);
 
-        if(!MemberRoleAccessPolicy.checkMemberRole(find, Role.OWNER)){
-            throw new RuntimeException();
-        }
+        MemberStatusAccessPolicy.isActive(requester);
+        MemberRoleAccessPolicy.isHigherThan(requester, Role.MANAGER);
 
         String imageKey;
         if(command.isImageChanged()){
@@ -75,6 +75,17 @@ public class ClubService {
             command.setImageKey(imageKey);
         }
 
-        club.changeInfo(command);
+        clubStore.saveClubEvent(club.changeInfo(username, command));
+    }
+
+
+    public void closeClub(String username, Long clubId){
+        Club club = clubStore.find(clubId);
+        MemberDto requester = memberService.getMemberInfo(clubId, username);
+
+        MemberStatusAccessPolicy.isActive(requester);
+        MemberRoleAccessPolicy.isHigherThan(requester, Role.MANAGER);
+
+        clubStore.saveClubEvent(club.close(username));
     }
 }

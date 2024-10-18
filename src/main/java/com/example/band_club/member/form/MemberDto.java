@@ -2,8 +2,11 @@ package com.example.band_club.member.form;
 
 
 import com.example.band_club.member.Member;
+import com.example.band_club.member.MemberStatus;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.Year;
 
 @Getter
 @Setter
@@ -17,8 +20,10 @@ public class MemberDto {
     private Integer roleRank;
 
     private String name;
-    private Integer birthYear;
+    private Integer age;
     private String gender;
+    private MemberStatus status;
+    private String statusName;
 
     public MemberDto(Member member){
         this.memberId = member.getId();
@@ -27,7 +32,9 @@ public class MemberDto {
         this.roleName = member.getRole().getDisplay();
         this.roleRank = member.getRole().getRank();
         this.name = member.getName();
-        this.birthYear = member.getBirthYear();
+        this.age = Year.now().getValue() - member.getBirthYear();
         this.gender = member.getGender();
+        this.status = member.getStatus();
+        this.statusName = member.getStatus().getDisplay();
     }
 }

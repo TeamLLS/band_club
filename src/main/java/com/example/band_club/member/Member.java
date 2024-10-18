@@ -2,8 +2,13 @@ package com.example.band_club.member;
 
 
 import com.example.band_club.club.Club;
+import com.example.band_club.member.command.ChangeMemberRole;
 import com.example.band_club.member.command.CreateMember;
+import com.example.band_club.member.event.MemberBanned;
+import com.example.band_club.member.event.MemberRoleChanged;
+import com.example.band_club.member.event.MemberWithdrawn;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +23,15 @@ public class Member {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @NotNull
     private String username;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -45,5 +54,25 @@ public class Member {
         this.birthYear = command.getBirthYear();
         this.status = MemberStatus.ACTIVE;
         this.createdAt = Instant.now();
+    }
+
+    public MemberRoleChanged changeRole(String username, ChangeMemberRole command){
+        this.role = command.getRole();
+
+        return new MemberRoleChanged(username, this);
+    }
+
+    public MemberWithdrawn withDraw(){
+        this.status = MemberStatus.TERMINATED;
+        this.terminatedAt = Instant.now();
+
+        return new MemberWithdrawn(this);
+    }
+
+    public MemberBanned ban(String username){
+        this.status = MemberStatus.TERMINATED;
+        this.terminatedAt = Instant.now();
+
+        return new MemberBanned(username,this);
     }
 }

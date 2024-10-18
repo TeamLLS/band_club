@@ -18,7 +18,7 @@ public class ClubCreated extends ClubEvent {
     private String contactInfo;
 
 
-    public ClubCreated(Club club, String username) {
+    public ClubCreated(String username, Club club) {
         super(username, UUID.randomUUID().toString(), club.getId(), club.getCreatedAt());
         this.name = club.getName();
         this.image = club.getImage();

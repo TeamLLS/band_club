@@ -6,10 +6,13 @@ import com.example.band_club.club.ClubStore;
 import com.example.band_club.external.feignClient.UserProfile;
 import com.example.band_club.external.feignClient.UserServiceClient;
 import com.example.band_club.external.s3.S3Service;
+import com.example.band_club.member.command.ChangeMemberRole;
 import com.example.band_club.member.command.CreateMember;
-import com.example.band_club.member.form.ClubMemberItemDto;
+import com.example.band_club.member.exception.DuplicatedMemberException;
+import com.example.band_club.member.form.MemberClubItemDto;
 import com.example.band_club.member.form.MemberDto;
 import com.example.band_club.policy.MemberRoleAccessPolicy;
+import com.example.band_club.policy.MemberStatusAccessPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,33 +36,39 @@ public class MemberService {
         createMember(username, command);
     }
 
-    public void registerRegular(String username, CreateMember command){
+    public Long registerRegular(String username, CreateMember command){
 
         Member requester = memberStore.findMemberByUsername(command.getClubId(), username);
-        if(!MemberRoleAccessPolicy.checkMemberRole(requester, Role.MANAGER)){
-            throw new RuntimeException();
-        }
-        Club targetClub = clubStore.find(command.getClubId());
-        command.setCLub(targetClub);
+
+        MemberStatusAccessPolicy.isActive(requester);
+        MemberRoleAccessPolicy.isHigherThan(requester, Role.REGULAR);
+
+        Club club = clubStore.find(command.getClubId());
+        command.setClub(club);
         command.setRole(Role.REGULAR);
 
-        createMember(username, command);
+        return createMember(username, command);
     }
 
-    private void createMember(String username, CreateMember command){
+    private Long createMember(String username, CreateMember command){
+
+        if(memberStore.existMemberByUsername(command.getClubId(), command.getUsername())){
+            throw new DuplicatedMemberException("이미 존재하는 회원", command.getClubId(), command.getUsername());
+        }
 
         UserProfile profile = userServiceClient.getProfile(command.getUsername());
         command.setProfile(profile);
 
-        Member newMember = new Member(command);
-        memberStore.save(username, newMember);
+        Member saved = memberStore.save(username, new Member(command));
         command.getClub().memberNumIncreased();
+
+        return saved.getId();
     }
 
     @Transactional(readOnly = true)
-    public List<ClubMemberItemDto> findClubMemberList(String username, int pageNo){
-        return memberStore.findClubMemberListByUsername(username, pageNo).stream()
-                .map(m -> new ClubMemberItemDto(m, s3Service.getProduction() + "/" + m.getClub().getImage())).toList();
+    public List<MemberClubItemDto> getMemberClubList(String username, int pageNo){
+        return memberStore.findMemberClubListByUsername(username, pageNo).stream()
+                .map(m -> new MemberClubItemDto(m, s3Service.getProduction() + "/" + m.getClub().getImage())).toList();
     }
 
 
@@ -69,4 +78,37 @@ public class MemberService {
         return new MemberDto(find);
     }
 
+    @Transactional(readOnly = true)
+    public List<MemberDto> getMemberList(Long clubId, int pageNo){
+        return memberStore.findMemberListByClubId(clubId, pageNo).stream()
+                .map(MemberDto::new).toList();
+    }
+
+    public void changeMemberRole(String username, ChangeMemberRole command){
+        Member member = memberStore.find(command.getMemberId());
+
+        Member requester = memberStore.findMemberByUsername(member.getClub().getId(), username);
+
+        MemberStatusAccessPolicy.isActive(requester);
+        MemberRoleAccessPolicy.isHigherThan(requester, Role.MANAGER);
+
+        memberStore.saveMemberEvent(member.changeRole(username, command));
+    }
+
+    public void withdrawMember(String username, Long clubId){
+        Member member = memberStore.findMemberByUsername(clubId, username);
+        member.getClub().memberNumDecreased();
+        memberStore.saveMemberEvent(member.withDraw());
+    }
+
+    public void banMember(String username, Long memberId){
+        Member member = memberStore.find(memberId);
+        Member requester = memberStore.findMemberByUsername(member.getClub().getId(), username);
+        member.getClub().memberNumDecreased();
+
+        MemberStatusAccessPolicy.isActive(requester);
+        MemberRoleAccessPolicy.isHigherThan(requester, member.getRole());
+
+        memberStore.saveMemberEvent(member.ban(username));
+    }
 }

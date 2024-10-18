@@ -4,33 +4,31 @@ import com.example.band_club.club.ClubStatus;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-//@Setter
 @AllArgsConstructor
 public class ChangeClub {
 
     @NotEmpty
     private Long clubId;
 
-    private String name;
     private Boolean nameChanged;
+    private String name;
 
-    private String description;
     private Boolean descriptionChanged;
+    private String description;
 
-    private MultipartFile image;
     private Boolean imageChanged;
     private String imageKey;
+    private MultipartFile image;
 
-    private String contactInfo;
     private Boolean contactInfoChanged;
+    private String contactInfo;
 
-    private ClubStatus status;
     private Boolean statusChanged;
+    private ClubStatus status;
+
 
 
     public boolean isNameChanged() {

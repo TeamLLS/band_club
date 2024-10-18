@@ -4,14 +4,18 @@ import com.example.band_club.club.Club;
 import com.example.band_club.external.feignClient.UserProfile;
 import com.example.band_club.member.Role;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class CreateMember {
 
-    @NotEmpty
+    @NotNull
     private Long clubId;
     private Club club;          //반드시 별도 세팅
     @NotEmpty
@@ -21,7 +25,7 @@ public class CreateMember {
     private Integer birthYear;
     private String gender;
 
-    public CreateMember(Club club, String username){
+    public CreateMember(String username, Club club){
         this.clubId=club.getId();
         this.club=club;
         this.username=username;
@@ -31,11 +35,5 @@ public class CreateMember {
         this.name=profile.getName();
         this.birthYear =profile.getBirthYear();
         this.gender=profile.getGender();
-    }
-    public void setCLub(Club club){
-        this.club=club;
-    }
-    public void setRole(Role role){
-        this.role=role;
     }
 }

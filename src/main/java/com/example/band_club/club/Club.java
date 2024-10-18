@@ -2,7 +2,10 @@ package com.example.band_club.club;
 
 import com.example.band_club.club.command.ChangeClub;
 import com.example.band_club.club.command.CreateClub;
+import com.example.band_club.club.event.ClubChanged;
+import com.example.band_club.club.event.ClubClosed;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +21,7 @@ public class Club {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     private String name;
 
     private String image;
@@ -52,7 +56,7 @@ public class Club {
         memberNum--;
     }
 
-    public void changeInfo(ChangeClub command){
+    public ClubChanged changeInfo(String username, ChangeClub command){
 
         if(command.isImageChanged()){
             this.image=command.getImageKey();
@@ -69,5 +73,14 @@ public class Club {
         if(command.isStatusChanged()){
             this.status=command.getStatus();
         }
+
+        return new ClubChanged(username, this);
+    }
+
+
+    public ClubClosed close(String username){
+        this.status = ClubStatus.CLOSED;
+        this.closedAt = Instant.now();
+        return new ClubClosed(username, this);
     }
 }

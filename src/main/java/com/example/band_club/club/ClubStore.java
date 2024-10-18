@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 public class ClubStore {
 
@@ -23,13 +23,18 @@ public class ClubStore {
 
     public Club save(String username, Club club){
         Club saved = clubRepository.save(club);
-        ClubEvent createdEvent = new ClubCreated(saved, username);
+        ClubEvent createdEvent = new ClubCreated(username, saved);
         clubEventRepository.save(new ClubEventJpo(createdEvent));
         return saved;
     }
 
+    //@Transactional(readOnly = true)
     public Club find(Long clubId){
         return clubRepository.findById(clubId).orElseThrow();
     }
 
+
+    public void saveClubEvent(ClubEvent event){
+        clubEventRepository.save(new ClubEventJpo(event));
+    }
 }

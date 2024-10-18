@@ -1,7 +1,7 @@
 package com.example.band_club.club;
 
+import com.example.band_club.club.command.ChangeClub;
 import com.example.band_club.club.command.CreateClub;
-import com.example.band_club.club.form.ClubDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,17 +31,22 @@ public class ClubController {
 
     @GetMapping("/{clubId}")
     public ResponseEntity<?> getClubInfo(@PathVariable Long clubId){
-        ClubDto clubInfo = clubService.getClubInfo(clubId);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("clubInfo", clubInfo);
-
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(clubService.getClubInfo(clubId));
     }
 
 
-    @PatchMapping("/{clubId}")
-    public ResponseEntity<?> changeUserInfo(@PathVariable Long clubId){
+    @PatchMapping
+    public ResponseEntity<?> changeClubInfo(@RequestHeader String username, @ModelAttribute ChangeClub command){
+
+        clubService.changeClubInfo(username, command);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{clubId}/close")
+    public ResponseEntity<?> closeClub(@RequestHeader String username, @PathVariable Long clubId){
+
+        clubService.closeClub(username, clubId);
+
         return ResponseEntity.ok().build();
     }
 }

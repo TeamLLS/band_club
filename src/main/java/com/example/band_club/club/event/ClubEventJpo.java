@@ -3,11 +3,13 @@ package com.example.band_club.club.event;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class ClubEventJpo {
 
