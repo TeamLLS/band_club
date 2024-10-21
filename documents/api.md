@@ -2,7 +2,7 @@
 
 | API | 설명 | DB | 이벤트 |
 |-----|------|----|-------|
-|[클럽 생성](##hi)|내 클럽 생성|Club & Member 생성|ClubCreated, MemberCreated|
+|[클럽 생성](#hi)|내 클럽 생성|Club & Member 생성|ClubCreated, MemberCreated|
 |클럽 정보 변경|대상 클럽 정보 변경|Club 변경|ClubChanged|
 |클럽 정보 조회|대상 클럽 정보 반환|||
 |클럽 해체|대상 클럽 해체|Club 변경|ClubClosed|
@@ -15,6 +15,7 @@
 
 
 ## hi
+
 ## ▶클럽 생성
 ### POST /club
 ```
