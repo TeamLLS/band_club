@@ -1,5 +1,19 @@
 # API
 
+| API | 설명 | DB | 이벤트 |
+|-----|------|----|-------|
+|클럽 생성|내 클럽 생성|Club & Member 생성|ClubCreated, MemberCreated|
+|클럽 정보 변경|대상 클럽 정보 변경|Club 변경|ClubChanged|
+|클럽 정보 조회|대상 클럽 정보 반환|||
+|클럽 해체|대상 클럽 해체|Club 변경|ClubClosed|
+|내 클럽 리스트 조회|내가 소속된 클럽의 목록 반환|||
+|회원 등록|대상 클럽에 대상 User를 회원으로 등록|Member 생성|MemberCreated|
+|클럽 회원 조회|대상 클럽의 활성화 회원 목록 반환|||
+|회원 권한 변경|대상 회원의 권한을 변경|Member 변경|MemberRoleChanged|
+|회원 탈퇴|대상 클럽 탈퇴|Member 변경|MemberWithdrawn|
+|회원 강퇴|대상 회원을 클럽에서 강퇴|Member 변경|MemberBanned|
+
+
 ## ▶클럽 생성
 ### POST /club
 ```
