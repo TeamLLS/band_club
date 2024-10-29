@@ -1,4 +1,4 @@
-package com.example.band_club.policy;
+package com.example.band_club.member.policy;
 
 import com.example.band_club.member.Member;
 import com.example.band_club.member.MemberStatus;
@@ -14,8 +14,8 @@ public class MemberStatusAccessPolicy {
     }
 
     public static void isActive(MemberDto member){
-        if(member.getStatus() != MemberStatus.ACTIVE){
-            throw new NotActiveMemberException("활성 멤버 아님", member.getMemberId(), member.getStatus().getDisplay());
+        if(!member.getStatus().equals(MemberStatus.ACTIVE.getDisplay())){
+            throw new NotActiveMemberException("활성 멤버 아님", member.getMemberId(), member.getStatus());
         }
     }
 }

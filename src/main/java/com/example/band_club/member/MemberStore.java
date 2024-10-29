@@ -7,6 +7,7 @@ import com.example.band_club.member.event.MemberEventJpo;
 import com.example.band_club.member.event.MemberEventRepository;
 import com.example.band_club.member.exception.NotMemberException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -25,9 +26,9 @@ public class MemberStore {
     public Member save(String username, Member member){
         Member saved = memberRepository.save(member);
 
-        MemberCreated createdEvent = new MemberCreated(username, saved);
+        MemberEvent memberCreated = new MemberCreated(username, saved);
 
-        memberEventRepository.save(new MemberEventJpo(createdEvent));
+        memberEventRepository.save(new MemberEventJpo(memberCreated));
 
         return saved;
     }
@@ -44,18 +45,18 @@ public class MemberStore {
 
 
     //@Transactional(readOnly = true)
-    public List<Member> findMemberClubListByUsername(String username, int pageNo){
+    public Page<Member> findMemberClubListByUsername(String username, int pageNo, int pageSize){
 
-        Pageable pageable = PageRequest.of(pageNo, 2);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
 
-        return memberRepository.findAllWithClubByUsername(username, pageable).getContent();
+        return memberRepository.findAllWithClubByUsername(username, pageable);
     }
 
     //@Transactional(readOnly = true)
-    public List<Member> findMemberListByClubId(Long clubId, int pageNo){
-        Pageable pageable = PageRequest.of(pageNo, 2);
+    public Page<Member> findMemberListByClubId(Long clubId, int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
 
-        return memberRepository.findAllByClubId(clubId, pageable).getContent();
+        return memberRepository.findAllByClubId(clubId, pageable);
     }
 
     //@Transactional(readOnly = true)
@@ -63,7 +64,7 @@ public class MemberStore {
         return memberRepository.findById(memberId).orElseThrow();
     }
 
-    public void saveMemberEvent(MemberEvent event){
+    public void saveEvent(MemberEvent event){
         memberEventRepository.save(new MemberEventJpo(event));
     }
 }

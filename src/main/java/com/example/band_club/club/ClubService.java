@@ -8,8 +8,8 @@ import com.example.band_club.member.MemberService;
 import com.example.band_club.member.Role;
 import com.example.band_club.member.command.CreateMember;
 import com.example.band_club.member.form.MemberDto;
-import com.example.band_club.policy.MemberRoleAccessPolicy;
-import com.example.band_club.policy.MemberStatusAccessPolicy;
+import com.example.band_club.member.policy.MemberRoleAccessPolicy;
+import com.example.band_club.member.policy.MemberStatusAccessPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +56,7 @@ public class ClubService {
     }
 
 
-    public void changeClubInfo(String username, ChangeClub command){
+    public Long changeClubInfo(String username, ChangeClub command){
 
         Club club = clubStore.find(command.getClubId());
         MemberDto requester = memberService.getMemberInfo(club.getId(), username);
@@ -75,17 +75,21 @@ public class ClubService {
             command.setImageKey(imageKey);
         }
 
-        clubStore.saveClubEvent(club.changeInfo(username, command));
+        clubStore.saveEvent(club.changeInfo(username, command));
+
+        return club.getId();
     }
 
 
-    public void closeClub(String username, Long clubId){
+    public Long closeClub(String username, Long clubId){
         Club club = clubStore.find(clubId);
         MemberDto requester = memberService.getMemberInfo(clubId, username);
 
         MemberStatusAccessPolicy.isActive(requester);
         MemberRoleAccessPolicy.isHigherThan(requester, Role.MANAGER);
 
-        clubStore.saveClubEvent(club.close(username));
+        clubStore.saveEvent(club.close(username));
+
+        return club.getId();
     }
 }

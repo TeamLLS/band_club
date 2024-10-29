@@ -3,11 +3,13 @@ package com.example.band_club.club.event;
 
 import com.example.band_club.club.Club;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 
 @Getter
+@NoArgsConstructor
 public class ClubCreated extends ClubEvent {
     private String name;
 

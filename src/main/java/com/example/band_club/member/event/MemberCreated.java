@@ -4,10 +4,12 @@ package com.example.band_club.member.event;
 import com.example.band_club.member.Member;
 import com.example.band_club.member.Role;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Getter
+@NoArgsConstructor
 public class MemberCreated extends MemberEvent {
     private String username;
     private Role role;

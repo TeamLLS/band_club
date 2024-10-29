@@ -7,9 +7,6 @@ import com.example.band_club.club.event.ClubEventRepository;
 import com.example.band_club.club.event.ClubEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Component
 //@Transactional
@@ -23,8 +20,8 @@ public class ClubStore {
 
     public Club save(String username, Club club){
         Club saved = clubRepository.save(club);
-        ClubEvent createdEvent = new ClubCreated(username, saved);
-        clubEventRepository.save(new ClubEventJpo(createdEvent));
+        ClubEvent clubCreated = new ClubCreated(username, saved);
+        clubEventRepository.save(new ClubEventJpo(clubCreated));
         return saved;
     }
 
@@ -34,7 +31,7 @@ public class ClubStore {
     }
 
 
-    public void saveClubEvent(ClubEvent event){
+    public void saveEvent(ClubEvent event){
         clubEventRepository.save(new ClubEventJpo(event));
     }
 }

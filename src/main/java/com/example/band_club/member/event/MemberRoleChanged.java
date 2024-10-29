@@ -3,10 +3,14 @@ package com.example.band_club.member.event;
 import com.example.band_club.member.Member;
 import com.example.band_club.member.Role;
 import com.example.band_club.member.command.ChangeMemberRole;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
+@NoArgsConstructor
 public class MemberRoleChanged extends MemberEvent{
 
     private Role role;

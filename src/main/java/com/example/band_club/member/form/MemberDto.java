@@ -22,7 +22,7 @@ public class MemberDto {
     private String name;
     private Integer age;
     private String gender;
-    private MemberStatus status;
+    private String status;
     private String statusName;
 
     public MemberDto(Member member){
@@ -34,7 +34,7 @@ public class MemberDto {
         this.name = member.getName();
         this.age = Year.now().getValue() - member.getBirthYear();
         this.gender = member.getGender();
-        this.status = member.getStatus();
+        this.status = member.getStatus().getDisplay();
         this.statusName = member.getStatus().getDisplay();
     }
 }

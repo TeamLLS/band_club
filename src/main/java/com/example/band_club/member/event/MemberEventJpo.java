@@ -18,6 +18,8 @@ public class MemberEventJpo {
     private String eventId;
     private Long clubId;
     private Long memberId;
+
+    private String triggeredBy;
     private String eventType;
     @Lob
     private String payload;
@@ -27,6 +29,7 @@ public class MemberEventJpo {
         this.eventId = memberEvent.getEventId();
         this.memberId = memberEvent.getMemberId();
         this.clubId = memberEvent.getClubId();
+        this.triggeredBy = memberEvent.getTriggeredBy();
         this.eventType = memberEvent.typeName();
         this.payload = memberEvent.Payload();
         this.time = memberEvent.getTime();

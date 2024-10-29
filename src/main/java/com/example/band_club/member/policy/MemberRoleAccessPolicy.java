@@ -1,4 +1,4 @@
-package com.example.band_club.policy;
+package com.example.band_club.member.policy;
 
 import com.example.band_club.member.Member;
 import com.example.band_club.member.Role;

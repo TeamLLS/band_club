@@ -11,6 +11,7 @@ public class NotActiveMemberException extends RuntimeException{
 
     public NotActiveMemberException(String message, Long memberId, String status) {
         super(message);
+        this.memberId=memberId;
         this.current = status;
     }
 

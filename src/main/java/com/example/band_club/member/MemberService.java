@@ -3,6 +3,7 @@ package com.example.band_club.member;
 
 import com.example.band_club.club.Club;
 import com.example.band_club.club.ClubStore;
+import com.example.band_club.club.policy.ClubStatusAccessPolicy;
 import com.example.band_club.external.feignClient.UserProfile;
 import com.example.band_club.external.feignClient.UserServiceClient;
 import com.example.band_club.external.s3.S3Service;
@@ -11,8 +12,8 @@ import com.example.band_club.member.command.CreateMember;
 import com.example.band_club.member.exception.DuplicatedMemberException;
 import com.example.band_club.member.form.MemberClubItemDto;
 import com.example.band_club.member.form.MemberDto;
-import com.example.band_club.policy.MemberRoleAccessPolicy;
-import com.example.band_club.policy.MemberStatusAccessPolicy;
+import com.example.band_club.member.policy.MemberRoleAccessPolicy;
+import com.example.band_club.member.policy.MemberStatusAccessPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +27,13 @@ public class MemberService {
 
     private final UserServiceClient userServiceClient;
     private final S3Service s3Service;
-    private final ClubStore clubStore;
     private final MemberStore memberStore;
 
 
 
-    public void registerOwner(String username, CreateMember command){
+    public Long registerOwner(String username, CreateMember command){
         command.setRole(Role.OWNER);
-        createMember(username, command);
+        return createMember(username, command);
     }
 
     public Long registerRegular(String username, CreateMember command){
@@ -43,7 +43,9 @@ public class MemberService {
         MemberStatusAccessPolicy.isActive(requester);
         MemberRoleAccessPolicy.isHigherThan(requester, Role.REGULAR);
 
-        Club club = clubStore.find(command.getClubId());
+        Club club = requester.getClub();
+        ClubStatusAccessPolicy.isActive(club);
+
         command.setClub(club);
         command.setRole(Role.REGULAR);
 
@@ -67,7 +69,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public List<MemberClubItemDto> getMemberClubList(String username, int pageNo){
-        return memberStore.findMemberClubListByUsername(username, pageNo).stream()
+        return memberStore.findMemberClubListByUsername(username, pageNo, 2).getContent().stream()
                 .map(m -> new MemberClubItemDto(m, s3Service.getProduction() + "/" + m.getClub().getImage())).toList();
     }
 
@@ -80,28 +82,31 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public List<MemberDto> getMemberList(Long clubId, int pageNo){
-        return memberStore.findMemberListByClubId(clubId, pageNo).stream()
-                .map(MemberDto::new).toList();
+        return memberStore.findMemberListByClubId(clubId, pageNo, 2).getContent()
+                .stream().map(MemberDto::new).toList();
     }
 
-    public void changeMemberRole(String username, ChangeMemberRole command){
+    public Long changeMemberRole(String username, ChangeMemberRole command){
         Member member = memberStore.find(command.getMemberId());
 
         Member requester = memberStore.findMemberByUsername(member.getClub().getId(), username);
 
         MemberStatusAccessPolicy.isActive(requester);
-        MemberRoleAccessPolicy.isHigherThan(requester, Role.MANAGER);
+        MemberRoleAccessPolicy.isHigherThan(requester, member.getRole());
 
-        memberStore.saveMemberEvent(member.changeRole(username, command));
+        memberStore.saveEvent(member.changeRole(username, command));
+
+        return member.getId();
     }
 
-    public void withdrawMember(String username, Long clubId){
+    public Long withdrawMember(String username, Long clubId){
         Member member = memberStore.findMemberByUsername(clubId, username);
         member.getClub().memberNumDecreased();
-        memberStore.saveMemberEvent(member.withDraw());
+        memberStore.saveEvent(member.withDraw());
+        return member.getId();
     }
 
-    public void banMember(String username, Long memberId){
+    public Long banMember(String username, Long memberId){
         Member member = memberStore.find(memberId);
         Member requester = memberStore.findMemberByUsername(member.getClub().getId(), username);
         member.getClub().memberNumDecreased();
@@ -109,6 +114,7 @@ public class MemberService {
         MemberStatusAccessPolicy.isActive(requester);
         MemberRoleAccessPolicy.isHigherThan(requester, member.getRole());
 
-        memberStore.saveMemberEvent(member.ban(username));
+        memberStore.saveEvent(member.ban(username));
+        return member.getId();
     }
 }

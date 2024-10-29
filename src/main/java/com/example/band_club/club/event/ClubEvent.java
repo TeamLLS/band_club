@@ -2,18 +2,20 @@ package com.example.band_club.club.event;
 
 import com.example.band_club.external.JsonUtil;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 
 @Getter
+@NoArgsConstructor
 public abstract class ClubEvent {
 
 
-    private final String eventId;
-    private final String triggeredBy;
-    private final Long clubId;
-    private final Instant time;
+    private String eventId;
+    private String triggeredBy;
+    private Long clubId;
+    private Instant time;
 
     public ClubEvent(String triggeredBy, String eventId, Long clubId, Instant time) {
         this.triggeredBy = triggeredBy;

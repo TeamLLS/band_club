@@ -17,13 +17,15 @@ public class ClubEventJpo {
     private String eventId;
     private Long clubId;
     private String eventType;
+    private String triggeredBy;
     @Lob
     private String payload;
     private Instant time;
 
     public ClubEventJpo(ClubEvent clubEvent){
         this.eventId= clubEvent.getEventId();
-        this.clubId=clubEvent.getClubId();
+        this.clubId= clubEvent.getClubId();
+        this.triggeredBy= clubEvent.getTriggeredBy();
         this.eventType= clubEvent.typeName();
         this.payload= clubEvent.Payload();
         this.time= clubEvent.getTime();
