@@ -50,7 +50,7 @@ band_club
 |        |club|Club|가입 Club|Foreginer Key, NotNull|
 |        |username|String|username|User 추적키, NotNull|
 |        |role|Role|권한|NotNull|
-|        |ststus|MemberStatus|Member 상태|NotNukk|
+|        |ststus|MemberStatus|Member 상태|NotNull|
 |        |name|String|이름||
 |        |gender|String|성별|"male" or "female"|
 |        |birthYear|Integer|출생년도||
