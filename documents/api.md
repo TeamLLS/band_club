@@ -110,11 +110,11 @@ body: {
         {
             clubId: 클럽 ID, (Long)
             memberId: 회원 ID, (Long)
-            image: 이미지 리소스 URL, 
+            image: 이미지 리소스 URL, (String)
             name: 클럽 이름, (String)
-            clubStatus: 클럽 상태,
-            role: 회원 권한, 
-            memberStatus: 회원 상태
+            clubStatus: 클럽 상태, (String)
+            role: 회원 권한, (String)
+            memberStatus: 회원 상태 (String)
         },
         ...
     ]
