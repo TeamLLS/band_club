@@ -2,10 +2,10 @@
 
 | API | 설명 | DB | 이벤트 |
 |-----|------|----|-------|
-|[클럽 생성](#클럽-생성)|내 클럽 생성|Club & Member 생성|ClubCreated, MemberCreated|
+|[클럽 생성](#클럽-생성)|내 클럽 생성|Club & Member & Budget 생성|ClubCreated, MemberCreated, BudgetCreated|
 |[클럽 정보 변경](#클럽-정보-변경)|대상 클럽 정보 변경|Club 변경|ClubChanged|
 |[클럽 정보 조회](#클럽-정보-조회)|대상 클럽 정보 반환|||
-|[클럽 해체](#클럽-해체)|대상 클럽 해체|Club 변경|ClubClosed|
+|[클럽 해체](#클럽-해체)|대상 클럽 해체|Club, Budget 변경|ClubClosed, BudgetClosed|
 |[내 클럽 리스트 조회](#내-클럽-리스트-조회)|내가 소속된 클럽의 목록 반환|||
 |[회원 등록](#회원-등록)|대상 클럽에 대상 User를 회원으로 등록|Member 생성|MemberCreated|
 |[클럽 회원 조회](#클럽-회원-조회)|대상 클럽의 활성화 회원 목록 반환|||
@@ -52,7 +52,7 @@ form-data: {
   descriptionChanged: 설명 변경 경부, (Boolean, true or false)
   image: 모임 이미지, (MulitPartFile)
   imageChanged: 이미지 변경 여부, (Boolean, true or false)
-  status: 클럽 상태 (ACTIVE or RECRUITING or TERMINATED)
+  status: 클럽 상태 (ACTIVE or RECRUITING)
   statusChanged: 상태 변경 여부 (Boolean, true or false)
 } 
 ```
@@ -110,11 +110,11 @@ body: {
         {
             clubId: 클럽 ID, (Long)
             memberId: 회원 ID, (Long)
-            image: 이미지 리소스 URL, 
+            image: 이미지 리소스 URL, (String)
             name: 클럽 이름, (String)
-            clubStatus: 클럽 상태,
-            role: 회원 권한, 
-            memberStatus: 회원 상태
+            clubStatus: 클럽 상태, (String)
+            role: 회원 권한, (String)
+            memberStatus: 회원 상태 (String)
         },
         ...
     ]
