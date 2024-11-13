@@ -29,19 +29,26 @@ public class ActivityService {
     private final KafkaProducerService kafkaProducerService;
 
     public void create(String username, ActivityForm form){
+        ClubDto club = clubService.getClubInfo(form.getClubId());
         MemberDto member = memberService.getMemberInfo(form.getClubId(), username);
 
+
+        ClubStatusAccessPolicy.isActive(club);
         MemberRoleAccessPolicy.isHigherThan(member, Role.REGULAR);
         MemberStatusAccessPolicy.isActive(member);
 
-        ClubDto club = clubService.getClubInfo(form.getClubId());
 
-        ClubStatusAccessPolicy.isActive(club);
+        String imageKey;
+        if(form.getImage()==null || form.getImage().isEmpty()){
+            imageKey = "common/activity/default.png";
+        }else{
+            imageKey = s3Service.saveImage("club/" + club.getName()
+                    + "/activity/" + form.getName() + "/image", "main", form.getImage());
+        }
 
-        String imageKey = s3Service.saveImage("club/" + club.getName()
-                + "/activity/" + form.getName() + "/image", "main", form.getImage());
+        OpenActivity command = new OpenActivity(username, club.getClubId(), form.getName(), imageKey,
+                form.getDescription(), form.getLocation(), form.getStartTime(), form.getEndTime());
 
-        OpenActivity command = new OpenActivity(username, club.getClubId(), form.getName(), imageKey, form.getDescription(), form.getStartTime(), form.getEndTime());
         kafkaProducerService.sendActivityCommandToKafka(command);
     }
 

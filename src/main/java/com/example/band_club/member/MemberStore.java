@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-//@Transactional
 @RequiredArgsConstructor
 public class MemberStore {
 
@@ -33,7 +32,6 @@ public class MemberStore {
         return saved;
     }
 
-    //@Transactional(readOnly = true)
     public Member findMemberByUsername(Long clubId, String username){
         return memberRepository.findByClubIdAndUsername(clubId, username)
                 .orElseThrow(()->new NotMemberException("회원 아님", clubId, username));
@@ -44,7 +42,6 @@ public class MemberStore {
     }
 
 
-    //@Transactional(readOnly = true)
     public Page<Member> findMemberClubListByUsername(String username, int pageNo, int pageSize){
 
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -52,14 +49,16 @@ public class MemberStore {
         return memberRepository.findAllWithClubByUsername(username, pageable);
     }
 
-    //@Transactional(readOnly = true)
     public Page<Member> findMemberListByClubId(Long clubId, int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
 
         return memberRepository.findAllByClubId(clubId, pageable);
     }
 
-    //@Transactional(readOnly = true)
+    public List<Member> findSpecificList(List<Integer> list){
+        return memberRepository.findSpecifics(list);
+    }
+
     public Member find(Long memberId){
         return memberRepository.findById(memberId).orElseThrow();
     }

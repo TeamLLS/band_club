@@ -2,7 +2,6 @@ package com.example.band_club.member.form;
 
 
 import com.example.band_club.member.Member;
-import com.example.band_club.member.MemberStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +22,7 @@ public class MemberDto {
     private Integer age;
     private String gender;
     private String status;
-    private String statusName;
+
 
     public MemberDto(Member member){
         this.memberId = member.getId();
@@ -35,6 +34,5 @@ public class MemberDto {
         this.age = Year.now().getValue() - member.getBirthYear();
         this.gender = member.getGender();
         this.status = member.getStatus().getDisplay();
-        this.statusName = member.getStatus().getDisplay();
     }
 }

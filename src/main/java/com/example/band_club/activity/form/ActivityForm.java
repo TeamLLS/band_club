@@ -21,6 +21,8 @@ public class ActivityForm {
 
     private MultipartFile image;
 
+    private String location;
+
     private String description;
 
     private Instant startTime;

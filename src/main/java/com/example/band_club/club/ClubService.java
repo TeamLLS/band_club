@@ -1,8 +1,10 @@
 package com.example.band_club.club;
 
+import com.example.band_club.budget.BudgetService;
 import com.example.band_club.club.command.ChangeClub;
 import com.example.band_club.club.command.CreateClub;
 import com.example.band_club.club.form.ClubDto;
+import com.example.band_club.club.policy.ClubStatusAccessPolicy;
 import com.example.band_club.external.s3.S3Service;
 import com.example.band_club.member.MemberService;
 import com.example.band_club.member.Role;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ClubService {
 
+    private final BudgetService budgetService;
     private final MemberService memberService;
     private final ClubStore clubStore;
     private final S3Service s3Service;
@@ -36,11 +39,11 @@ public class ClubService {
 
         command.setImageKey(imageKey);
 
-        Club newClub = new Club(command);
-
-        Club saved = clubStore.save(username, newClub);
+        Club saved = clubStore.save(username, new Club(command));
 
         memberService.registerOwner(username, new CreateMember(username,saved));
+
+        budgetService.createBudget(saved.getId(), username);
 
         return saved.getId();
     }
@@ -61,6 +64,7 @@ public class ClubService {
         Club club = clubStore.find(command.getClubId());
         MemberDto requester = memberService.getMemberInfo(club.getId(), username);
 
+        ClubStatusAccessPolicy.isActive(club);
         MemberStatusAccessPolicy.isActive(requester);
         MemberRoleAccessPolicy.isHigherThan(requester, Role.MANAGER);
 
@@ -85,8 +89,11 @@ public class ClubService {
         Club club = clubStore.find(clubId);
         MemberDto requester = memberService.getMemberInfo(clubId, username);
 
+        ClubStatusAccessPolicy.isActive(club);
         MemberStatusAccessPolicy.isActive(requester);
         MemberRoleAccessPolicy.isHigherThan(requester, Role.MANAGER);
+
+        budgetService.closeBudget(clubId, username);
 
         clubStore.saveEvent(club.close(username));
 

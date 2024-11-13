@@ -68,8 +68,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberClubItemDto> getMemberClubList(String username, int pageNo){
-        return memberStore.findMemberClubListByUsername(username, pageNo, 2).getContent().stream()
+    public List<MemberClubItemDto> getMemberClubList(String username, int pageNo, int pageSize){
+        return memberStore.findMemberClubListByUsername(username, pageNo, pageSize).getContent().stream()
                 .map(m -> new MemberClubItemDto(m, s3Service.getProduction() + "/" + m.getClub().getImage())).toList();
     }
 
@@ -81,10 +81,16 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberDto> getMemberList(Long clubId, int pageNo){
-        return memberStore.findMemberListByClubId(clubId, pageNo, 2).getContent()
+    public List<MemberDto> getMemberList(Long clubId, int pageNo, int pageSize){
+        return memberStore.findMemberListByClubId(clubId, pageNo, pageSize).getContent()
                 .stream().map(MemberDto::new).toList();
     }
+
+    @Transactional(readOnly = true)
+    public List<MemberDto> getSpecificMemberList(List<Integer> list){
+        return memberStore.findSpecificList(list).stream().map(MemberDto::new).toList();
+    }
+
 
     public Long changeMemberRole(String username, ChangeMemberRole command){
         Member member = memberStore.find(command.getMemberId());

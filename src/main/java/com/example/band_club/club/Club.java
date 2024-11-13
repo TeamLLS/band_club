@@ -70,7 +70,7 @@ public class Club {
         if(command.isNameChanged()){
             this.name=command.getName();
         }
-        if(command.isStatusChanged()){
+        if(command.isStatusChanged() && command.getStatus()!=ClubStatus.CLOSED){
             this.status=command.getStatus();
         }
 
