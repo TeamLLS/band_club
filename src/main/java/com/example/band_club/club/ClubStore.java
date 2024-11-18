@@ -1,10 +1,8 @@
 package com.example.band_club.club;
 
 
-import com.example.band_club.club.event.ClubCreated;
-import com.example.band_club.club.event.ClubEventJpo;
-import com.example.band_club.club.event.ClubEventRepository;
-import com.example.band_club.club.event.ClubEvent;
+import com.example.band_club.club.event.*;
+import com.example.band_club.external.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ClubStore {
 
+    private final KafkaProducerService kafkaProducerService;
     private final ClubRepository clubRepository;
     private final ClubEventRepository clubEventRepository;
 
@@ -20,8 +19,7 @@ public class ClubStore {
 
     public Club save(String username, Club club){
         Club saved = clubRepository.save(club);
-        ClubEvent clubCreated = new ClubCreated(username, saved);
-        clubEventRepository.save(new ClubEventJpo(clubCreated));
+        saveEvent(new ClubCreated(username, saved));
         return saved;
     }
 
@@ -31,7 +29,13 @@ public class ClubStore {
     }
 
 
-    public void saveEvent(ClubEvent event){
-        clubEventRepository.save(new ClubEventJpo(event));
+    public ClubEventJpo saveEvent(ClubEvent event){
+        ClubEventJpo saved = clubEventRepository.save(new ClubEventJpo(event));
+
+        if(!(event instanceof ClubChanged)){
+            kafkaProducerService.sendClubEventToKafka(event);
+        }
+
+        return saved;
     }
 }

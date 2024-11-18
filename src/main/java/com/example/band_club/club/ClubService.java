@@ -5,6 +5,7 @@ import com.example.band_club.club.command.ChangeClub;
 import com.example.band_club.club.command.CreateClub;
 import com.example.band_club.club.form.ClubDto;
 import com.example.band_club.club.policy.ClubStatusAccessPolicy;
+import com.example.band_club.external.kafka.KafkaProducerService;
 import com.example.band_club.external.s3.S3Service;
 import com.example.band_club.member.MemberService;
 import com.example.band_club.member.Role;
@@ -25,6 +26,7 @@ public class ClubService {
     private final MemberService memberService;
     private final ClubStore clubStore;
     private final S3Service s3Service;
+
 
 
     public Long createClub(String username, CreateClub command){

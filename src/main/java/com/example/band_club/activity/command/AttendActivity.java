@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AttendActivity extends ActivityCommand{
 
-    private Long clubId;
     private Long memberId;
     private String memberName;
     private Boolean additional;
     private String profileName;
 
     public AttendActivity(String username, Long activityId, Long clubId, Long memberId, String memberName, Boolean additional, String profileName) {
-        super(activityId, username);
-        this.clubId = clubId;
+        super(activityId, clubId, username);
         this.memberId = memberId;
         this.memberName = memberName;
         this.additional = additional;

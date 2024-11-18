@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CloseActivity extends ActivityCommand{
 
-    private Long clubId;
-
     public CloseActivity(String username, Long activityId, Long clubId) {
-        super(activityId, username);
-        this.clubId = clubId;
+        super(activityId, clubId, username);
     }
 }

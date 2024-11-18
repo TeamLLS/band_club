@@ -1,8 +1,10 @@
 package com.example.band_club.external.kafka;
 
 import com.example.band_club.budget.command.BudgetCommand;
+import com.example.band_club.club.event.ClubEvent;
 import com.example.band_club.external.JsonUtil;
 import com.example.band_club.activity.command.ActivityCommand;
+import com.example.band_club.member.event.MemberEvent;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class KafkaProducerService {
 
     @Value("${spring.kafka.template.budget-topic}")
     private String budgetTopic;
+
+    @Value("${spring.kafka.template.data-topic}")
+    private String dataTopic;
 
 
     public String sendActivityCommandToKafka(ActivityCommand command){
@@ -53,6 +58,44 @@ public class KafkaProducerService {
         String message = JsonUtil.toJson(node);
 
         CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(budgetTopic, message);
+
+        future.whenComplete((result, ex) -> {
+            if(ex != null){
+                log.error("Error: " + ex.getMessage());
+            } else{
+                log.info("Success: " + result.getRecordMetadata());
+            }
+        });
+
+        return message;
+    }
+
+    public String sendClubEventToKafka(ClubEvent event){
+
+        ObjectNode node = JsonUtil.toObjectNode(event);
+        node.put("type", event.getClass().getSimpleName());
+        String message = JsonUtil.toJson(node);
+
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(dataTopic, message);
+
+        future.whenComplete((result, ex) -> {
+            if(ex != null){
+                log.error("Error: " + ex.getMessage());
+            } else{
+                log.info("Success: " + result.getRecordMetadata());
+            }
+        });
+
+        return message;
+    }
+
+    public String sendMemberEventToKafka(MemberEvent event){
+
+        ObjectNode node = JsonUtil.toObjectNode(event);
+        node.put("type", event.getClass().getSimpleName());
+        String message = JsonUtil.toJson(node);
+
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(dataTopic, message);
 
         future.whenComplete((result, ex) -> {
             if(ex != null){

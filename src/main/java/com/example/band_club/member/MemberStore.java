@@ -1,10 +1,8 @@
 package com.example.band_club.member;
 
 
-import com.example.band_club.member.event.MemberCreated;
-import com.example.band_club.member.event.MemberEvent;
-import com.example.band_club.member.event.MemberEventJpo;
-import com.example.band_club.member.event.MemberEventRepository;
+import com.example.band_club.external.kafka.KafkaProducerService;
+import com.example.band_club.member.event.*;
 import com.example.band_club.member.exception.NotMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,17 +16,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberStore {
 
+
+    private final KafkaProducerService kafkaProducerService;
     private final MemberRepository memberRepository;
     private final MemberEventRepository memberEventRepository;
 
 
     public Member save(String username, Member member){
         Member saved = memberRepository.save(member);
-
-        MemberEvent memberCreated = new MemberCreated(username, saved);
-
-        memberEventRepository.save(new MemberEventJpo(memberCreated));
-
+        saveEvent(new MemberCreated(username, saved));
         return saved;
     }
 
@@ -63,7 +59,14 @@ public class MemberStore {
         return memberRepository.findById(memberId).orElseThrow();
     }
 
-    public void saveEvent(MemberEvent event){
-        memberEventRepository.save(new MemberEventJpo(event));
+    public MemberEventJpo saveEvent(MemberEvent event){
+
+        MemberEventJpo saved = memberEventRepository.save(new MemberEventJpo(event));
+
+        if(!(event instanceof MemberRoleChanged)){
+            kafkaProducerService.sendMemberEventToKafka(event);
+        }
+
+        return saved;
     }
 }

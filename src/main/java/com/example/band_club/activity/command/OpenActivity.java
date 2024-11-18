@@ -11,9 +11,6 @@ import java.time.Instant;
 public class OpenActivity extends ActivityCommand{
 
     @NotNull
-    private Long clubId;
-
-    @NotNull
     private String name;
 
     private String image;
@@ -26,8 +23,7 @@ public class OpenActivity extends ActivityCommand{
     private Instant endTime;
 
     public OpenActivity(String username, Long clubId, String name, String image, String location, String description, Instant startTime, Instant endTime) {
-        super(null, username);
-        this.clubId = clubId;
+        super(null, clubId, username);
         this.name = name;
         this.image = image;
         this.location = location;

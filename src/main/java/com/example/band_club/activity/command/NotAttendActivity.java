@@ -12,7 +12,7 @@ public class NotAttendActivity extends ActivityCommand{
     private Boolean additional;
 
     public NotAttendActivity(String username,Long activityId, Long memberId, Boolean additional) {
-        super(activityId, username);
+        super(activityId, null, username);
         this.activityId = activityId;
         this.memberId = memberId;
         this.additional = additional;
