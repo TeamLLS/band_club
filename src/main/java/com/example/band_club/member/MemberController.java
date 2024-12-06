@@ -23,7 +23,7 @@ public class MemberController {
 
     @GetMapping("/club/list")
     public ResponseEntity<?> getMemberClubList(@RequestHeader String username,@RequestParam int pageNo){
-        List<MemberClubItemDto> memberClubList = memberService.getMemberClubList(username, pageNo, 2);
+        List<MemberClubItemDto> memberClubList = memberService.getMemberClubList(username, pageNo, 50);
 
         Map<String, Object> response = new HashMap<>();
         response.put("list", memberClubList);
@@ -43,7 +43,7 @@ public class MemberController {
 
     @GetMapping("/{clubId}/list")
     public ResponseEntity<?> getMemberList(@PathVariable Long clubId, @RequestParam int pageNo){
-        List<MemberDto> memberList = memberService.getMemberList(clubId, pageNo, 2);
+        List<MemberDto> memberList = memberService.getMemberList(clubId, pageNo, 50);
 
         Map<String, Object> response = new HashMap<>();
         response.put("list", memberList);

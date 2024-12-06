@@ -33,7 +33,7 @@ public class ClubStore {
         ClubEventJpo saved = clubEventRepository.save(new ClubEventJpo(event));
 
         if(!(event instanceof ClubChanged)){
-            kafkaProducerService.sendClubEventToKafka(event);
+            kafkaProducerService.sendEventToKafka(event);
         }
 
         return saved;

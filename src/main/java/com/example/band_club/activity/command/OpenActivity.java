@@ -17,12 +17,11 @@ public class OpenActivity extends ActivityCommand{
 
     private String location;
     private String description;
-
     private Instant startTime;
-
     private Instant endTime;
+    private Instant deadline;
 
-    public OpenActivity(String username, Long clubId, String name, String image, String location, String description, Instant startTime, Instant endTime) {
+    public OpenActivity(String username, Long clubId, String name, String image, String location, String description, Instant startTime, Instant endTime, Instant deadline) {
         super(null, clubId, username);
         this.name = name;
         this.image = image;
@@ -30,5 +29,6 @@ public class OpenActivity extends ActivityCommand{
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.deadline = deadline;
     }
 }

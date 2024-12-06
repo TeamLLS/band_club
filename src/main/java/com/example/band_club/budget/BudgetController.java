@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+
 @Controller
 @RequestMapping
 @RequiredArgsConstructor
@@ -53,23 +55,23 @@ public class BudgetController {
     }
 
     @PatchMapping("/paymember/{payBookId}/{memberId}/pay")
-    public ResponseEntity<?> payMember(@RequestHeader String username, @PathVariable Long payBookId, @PathVariable Long memberId){
-        budgetService.changePayMemberStatus(username, payBookId, memberId, "PAID");
+    public ResponseEntity<?> payMember(@RequestHeader String username, @PathVariable Long payBookId, @PathVariable Long memberId, @RequestBody Instant time){
+        budgetService.changePayMemberStatus(username, payBookId, memberId, "PAID", time);
         return ResponseEntity.ok().build();
     }
     @PatchMapping("/paymember/{payBookId}/{memberId}/unpay")
     public ResponseEntity<?> unPayMember(@RequestHeader String username, @PathVariable Long payBookId, @PathVariable Long memberId){
-        budgetService.changePayMemberStatus(username, payBookId, memberId, "UNPAID");
+        budgetService.changePayMemberStatus(username, payBookId, memberId, "UNPAID", null);
         return ResponseEntity.ok().build();
     }
     @PatchMapping("/paymember/{payBookId}/{memberId}/late-pay")
-    public ResponseEntity<?> latePayMember(@RequestHeader String username, @PathVariable Long payBookId, @PathVariable Long memberId){
-        budgetService.changePayMemberStatus(username, payBookId, memberId, "LATE_PAID");
+    public ResponseEntity<?> latePayMember(@RequestHeader String username, @PathVariable Long payBookId, @PathVariable Long memberId, @RequestBody Instant time){
+        budgetService.changePayMemberStatus(username, payBookId, memberId, "LATE_PAID", time);
         return ResponseEntity.ok().build();
     }
     @PatchMapping("/paymember/{payBookId}/{memberId}/exclude")
     public ResponseEntity<?> excludeMember(@RequestHeader String username, @PathVariable Long payBookId, @PathVariable Long memberId){
-        budgetService.changePayMemberStatus(username, payBookId, memberId, "EXCLUDED");
+        budgetService.changePayMemberStatus(username, payBookId, memberId, "EXCLUDED", null);
         return ResponseEntity.ok().build();
     }
 }

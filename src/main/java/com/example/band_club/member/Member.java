@@ -6,7 +6,8 @@ import com.example.band_club.member.command.ChangeMemberRole;
 import com.example.band_club.member.command.CreateMember;
 import com.example.band_club.member.event.MemberBanned;
 import com.example.band_club.member.event.MemberRoleChanged;
-import com.example.band_club.member.event.MemberWithdrawn;
+import com.example.band_club.member.event.MemberLeft;
+import com.example.band_club.simulation.command.CreateMemberDummy;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -56,17 +57,29 @@ public class Member {
         this.createdAt = Instant.now();
     }
 
+    public Member(CreateMemberDummy command){
+        this.club = command.getClub();
+        this.username = command.getUsername();
+        this.role = command.getRole();
+        this.name = command.getName();
+        this.gender = command.getGender();
+        this.birthYear = command.getBirthYear();
+        this.status = MemberStatus.ACTIVE;
+        this.createdAt = Instant.now();
+    }
+
+
     public MemberRoleChanged changeRole(String username, ChangeMemberRole command){
         this.role = command.getRole();
 
         return new MemberRoleChanged(username, this);
     }
 
-    public MemberWithdrawn withDraw(){
+    public MemberLeft left(){
         this.status = MemberStatus.TERMINATED;
         this.terminatedAt = Instant.now();
 
-        return new MemberWithdrawn(this);
+        return new MemberLeft(this);
     }
 
     public MemberBanned ban(String username){

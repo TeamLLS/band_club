@@ -47,7 +47,7 @@ public class ActivityService {
         }
 
         OpenActivity command = new OpenActivity(username, club.getClubId(), form.getName(), imageKey,
-                form.getDescription(), form.getLocation(), form.getStartTime(), form.getEndTime());
+                form.getLocation(), form.getDescription(), form.getStartTime(), form.getEndTime(), form.getDeadline());
 
         kafkaProducerService.sendActivityCommandToKafka(command);
     }

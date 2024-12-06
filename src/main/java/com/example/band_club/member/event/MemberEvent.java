@@ -1,5 +1,6 @@
 package com.example.band_club.member.event;
 
+import com.example.band_club.core.Event;
 import com.example.band_club.external.JsonUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,19 +9,14 @@ import java.time.Instant;
 
 @Getter
 @NoArgsConstructor
-public abstract class MemberEvent {
-    private String eventId;
-    private String triggeredBy;
+public abstract class MemberEvent extends Event {
+
     private Long memberId;
-    private Long clubId;
-    private Instant time;
+
 
     public MemberEvent(String eventId, String triggeredBy, Long memberId, Long clubId, Instant time) {
-        this.eventId = eventId;
-        this.triggeredBy = triggeredBy;
+        super(eventId, clubId, triggeredBy, time);
         this.memberId = memberId;
-        this.clubId = clubId;
-        this.time = time;
     }
 
     public String typeName(){

@@ -2,7 +2,6 @@ package com.example.band_club.member;
 
 
 import com.example.band_club.club.Club;
-import com.example.band_club.club.ClubStore;
 import com.example.band_club.club.policy.ClubStatusAccessPolicy;
 import com.example.band_club.external.feignClient.UserProfile;
 import com.example.band_club.external.feignClient.UserServiceClient;
@@ -81,6 +80,12 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
+    public MemberDto getMemberInfo(Long memberId){
+        Member find = memberStore.findMemberById(memberId);
+        return new MemberDto(find);
+    }
+
+    @Transactional(readOnly = true)
     public List<MemberDto> getMemberList(Long clubId, int pageNo, int pageSize){
         return memberStore.findMemberListByClubId(clubId, pageNo, pageSize).getContent()
                 .stream().map(MemberDto::new).toList();
@@ -108,7 +113,7 @@ public class MemberService {
     public Long withdrawMember(String username, Long clubId){
         Member member = memberStore.findMemberByUsername(clubId, username);
         member.getClub().memberNumDecreased();
-        memberStore.saveEvent(member.withDraw());
+        memberStore.saveEvent(member.left());
         return member.getId();
     }
 

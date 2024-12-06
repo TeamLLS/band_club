@@ -5,9 +5,6 @@ import com.example.band_club.budget.command.*;
 import com.example.band_club.budget.form.BudgetRecordForm;
 import com.example.band_club.budget.form.MemberRegisterForm;
 import com.example.band_club.budget.form.PayBookForm;
-import com.example.band_club.club.ClubService;
-import com.example.band_club.club.form.ClubDto;
-import com.example.band_club.club.policy.ClubStatusAccessPolicy;
 import com.example.band_club.external.kafka.KafkaProducerService;
 import com.example.band_club.member.MemberService;
 import com.example.band_club.member.Role;
@@ -18,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -51,7 +49,7 @@ public class BudgetService {
         MemberRoleAccessPolicy.isHigherThan(member, Role.REGULAR);
         MemberStatusAccessPolicy.isActive(member);
 
-        kafkaProducerService.sendBudgetCommandToKafka(new CreatePayBook(username, form.getClubId(), form.getAmount(), form.getName(), form.getDescription()));
+        kafkaProducerService.sendBudgetCommandToKafka(new CreatePayBook(username, form.getClubId(), member.getName(), form.getAmount(), form.getName(), form.getDescription(), form.getDeadline()));
 
     }
 
@@ -126,7 +124,13 @@ public class BudgetService {
                 member.getMemberId(), member.getName(), member.getUsername()));
     }
 
-    public void changePayMemberStatus(String username, Long payBookId, Long memberId, String status){
-        kafkaProducerService.sendBudgetCommandToKafka(new ChangePayMemberStatus(username, payBookId, memberId, status));
+    public void changePayMemberStatus(String username, Long payBookId, Long memberId, String status, Instant time){
+        MemberDto target = memberService.getMemberInfo(memberId);
+        MemberDto requester = memberService.getMemberInfo(target.getClubId(), username);
+
+        MemberRoleAccessPolicy.isHigherThan(requester, Role.REGULAR);
+        MemberStatusAccessPolicy.isActive(requester);
+
+        kafkaProducerService.sendBudgetCommandToKafka(new UpdatePayMember(username, payBookId, memberId, status, time));
     }
 }

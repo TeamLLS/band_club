@@ -4,9 +4,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Getter
 @NoArgsConstructor
-public class ChangePayMemberStatus extends BudgetCommand {
+public class UpdatePayMember extends BudgetCommand {
 
     @NotNull
     private Long payBookId;
@@ -14,13 +16,14 @@ public class ChangePayMemberStatus extends BudgetCommand {
     private Long memberId;
     @NotNull
     private String status;
+    private Instant time;
 
-
-    public ChangePayMemberStatus(String username, Long payBookId, Long memberId, String status) {
+    public UpdatePayMember(String username, Long payBookId, Long memberId, String status, Instant time) {
         super(null, username);
         this.payBookId = payBookId;
         this.memberId = memberId;
         this.status = status;
+        this.time = time;
     }
 
 }

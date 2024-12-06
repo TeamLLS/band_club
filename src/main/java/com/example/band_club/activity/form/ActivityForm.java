@@ -28,4 +28,6 @@ public class ActivityForm {
     private Instant startTime;
 
     private Instant endTime;
+
+    private Instant deadline;
 }

@@ -32,6 +32,10 @@ public class MemberStore {
         return memberRepository.findByClubIdAndUsername(clubId, username)
                 .orElseThrow(()->new NotMemberException("회원 아님", clubId, username));
     }
+    public Member findMemberById(Long memberId){
+        return memberRepository.findById(memberId)
+                .orElseThrow(()->new NotMemberException("회원 아님"));
+    }
 
     public boolean existMemberByUsername(Long clubId, String username){
         return memberRepository.existsByClubIdAndUsername(clubId, username);
@@ -64,7 +68,7 @@ public class MemberStore {
         MemberEventJpo saved = memberEventRepository.save(new MemberEventJpo(event));
 
         if(!(event instanceof MemberRoleChanged)){
-            kafkaProducerService.sendMemberEventToKafka(event);
+            kafkaProducerService.sendEventToKafka(event);
         }
 
         return saved;

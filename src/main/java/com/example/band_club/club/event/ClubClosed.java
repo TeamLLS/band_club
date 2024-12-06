@@ -11,11 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ClubClosed extends ClubEvent{
 
-    private ClubStatus status;
-
     public ClubClosed(String username, Club club) {
         super(username, UUID.randomUUID().toString(), club.getId(), club.getClosedAt());
-        status = club.getStatus();
     }
 }
 
