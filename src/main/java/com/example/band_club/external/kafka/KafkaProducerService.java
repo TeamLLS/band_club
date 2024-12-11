@@ -2,6 +2,7 @@ package com.example.band_club.external.kafka;
 
 import com.example.band_club.budget.command.BudgetCommand;
 import com.example.band_club.club.event.ClubEvent;
+import com.example.band_club.community.command.CommunityCommand;
 import com.example.band_club.core.Event;
 import com.example.band_club.external.JsonUtil;
 import com.example.band_club.activity.command.ActivityCommand;
@@ -31,6 +32,9 @@ public class KafkaProducerService {
 
     @Value("${spring.kafka.template.data-topic}")
     private String dataTopic;
+
+    @Value("${spring.kafka.template.community-topic}")
+    private String communityTopic;
 
 
     public String sendActivityCommandToKafka(ActivityCommand command){
@@ -72,6 +76,25 @@ public class KafkaProducerService {
     }
 
 
+    public String sendCommunityCommandToKafka(CommunityCommand command){
+        ObjectNode node = JsonUtil.toObjectNode(command);
+        node.put("type", command.getClass().getSimpleName());
+        String message = JsonUtil.toJson(node);
+
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(communityTopic, message);
+
+        future.whenComplete((result, ex) -> {
+            if(ex != null){
+                log.error("Error: " + ex.getMessage());
+            } else{
+                log.info("Success: " + result.getRecordMetadata());
+            }
+        });
+
+        return message;
+    }
+
+
     public String sendEventToKafka(Event event){
 
         ObjectNode node = JsonUtil.toObjectNode(event);
@@ -90,5 +113,6 @@ public class KafkaProducerService {
 
         return message;
     }
+
 
 }

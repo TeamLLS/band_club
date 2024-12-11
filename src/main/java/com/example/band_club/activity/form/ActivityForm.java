@@ -30,4 +30,6 @@ public class ActivityForm {
     private Instant endTime;
 
     private Instant deadline;
+
+    private String contactInfo;
 }

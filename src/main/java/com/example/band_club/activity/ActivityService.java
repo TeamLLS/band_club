@@ -46,8 +46,12 @@ public class ActivityService {
                     + "/activity/" + form.getName() + "/image", "main", form.getImage());
         }
 
-        OpenActivity command = new OpenActivity(username, club.getClubId(), form.getName(), imageKey,
-                form.getLocation(), form.getDescription(), form.getStartTime(), form.getEndTime(), form.getDeadline());
+        if(form.getContactInfo()==null){
+            form.setContactInfo(club.getContactInfo());
+        }
+
+        OpenActivity command = new OpenActivity(username, club.getClubId(), form.getName(), imageKey, form.getLocation(),
+                form.getDescription(), form.getStartTime(), form.getEndTime(), form.getDeadline(), form.getContactInfo());
 
         kafkaProducerService.sendActivityCommandToKafka(command);
     }
