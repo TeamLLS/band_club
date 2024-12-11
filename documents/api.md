@@ -52,8 +52,10 @@ form-data: {
   descriptionChanged: 설명 변경 경부, (Boolean, true or false)
   image: 모임 이미지, (MulitPartFile)
   imageChanged: 이미지 변경 여부, (Boolean, true or false)
-  status: 클럽 상태 (ACTIVE or RECRUITING)
-  statusChanged: 상태 변경 여부 (Boolean, true or false)
+  status: 클럽 상태, (ACTIVE or RECRUITING)
+  statusChanged: 상태 변경 여부, (Boolean, true or false)
+  contactInfo: 연락처, (String)
+  contactInfoChanged: 연락처 변경 여부, (Boolean, true or false)
 } 
 ```
 
