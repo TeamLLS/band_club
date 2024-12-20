@@ -44,8 +44,56 @@
 
 
 # 서비스 개요 
-## 0. 주요기능
+## 0. 기능 요약
 ![l1](https://github.com/user-attachments/assets/138596d8-4d9a-4aab-87e9-ac56282a5e73)
+
+## 1. 로그인 & 프로필 & 모임 관리
+![c1](https://github.com/user-attachments/assets/227f2626-dc59-4ed0-9eb2-9290865b605e)
+
+```
+- 카카오 기반 로그인
+- 프로필 조회 및 변경
+- 모임 생성 및 조회 
+```
+
+## 2. 모임 내 활동 관리
+![c2](https://github.com/user-attachments/assets/cabcfe08-40e9-4305-bca5-ee496c149ebf)
+```
+- 모임 내 활동 생성 및 조회
+- 참가 여부 변경 및 참가자 표시
+```
+
+## 3. 모임 내 활동 관리
+![c3](https://github.com/user-attachments/assets/996a4ee8-2f00-4b25-98ff-a60acddad110)
+```
+- 회원 조회 및 추가
+- 공지 작성 및 조회
+- 댓글 및 답급 작성
+```
+
+## 4. 예산 및 장부 관리 
+![c4](https://github.com/user-attachments/assets/603fd0c9-31f8-489f-94f5-42a58738981f)
+```
+- 예산 변경 사항 등록
+- 특정 시점의 예산 상태 및 내역 조회
+- 장부 생성 및 조회
+- 납부 대상 회원 등록 및 납부 상태 변경
+```
+
+## 5. 활동 기반 모임 통계  
+![c5](https://github.com/user-attachments/assets/46bc6f51-c74b-4570-83b8-0a3151b2cec0)
+```
+- 월 단위 회원 증감 통계
+- 월 단위 활동량 통계
+- 월 단위 예산 통계 
+```
+
+## 6. 회원 성실도 평가 
+![c6](https://github.com/user-attachments/assets/656d5935-c3bd-4522-9a68-b284d2e73be2)
+```
+- 회원 활동 기반 (활동 참가율, 회비 납부율, 마지막 활동 시간 등) 점수 산출 및 순위 정렬
+- 회원별 최근 3개월 통계 합산
+```
 
 
 # api
