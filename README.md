@@ -1,13 +1,18 @@
 # ▶동아리 관리 서비스: MyZone
 ![1734664390048](https://github.com/user-attachments/assets/4cff46a7-13a2-410c-a65c-7a3ce7e287ab)
 
+```
+목적: 동아리 관리 편의 제공 목적 어플리케이션
+      생성된 데이터는 일반 회원들에게 제공
+```
+
 # ▶목차 
 - [기술](#기술)
 - [시스템 구성](#시스템-구성)
 - [DB 구성](#DB-구성)
 - [서비스 개요](#서비스-개요)
 - [성능 테스트 결과](#성능-테스트-결과)
-- [api](#api)
+- [API](#API)
 
 
 # ▶기술
@@ -109,7 +114,7 @@
 ![n1](https://github.com/user-attachments/assets/585e577c-29e2-4651-8262-c01195f6bfb3)
 ![n2](https://github.com/user-attachments/assets/f09111a8-d5e5-4e16-9756-a5e1acd8d0d6)
 
-# ▶api
+# ▶API
 | 서버 | 위치 |
 |------|------|
 | User 서버 | https://github.com/TeamLLS/band_user/blob/master/documents/api.md |
