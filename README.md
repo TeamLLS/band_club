@@ -4,7 +4,7 @@
 # ▶목차 
 - [기술](#기술)
 - [시스템 구성](#시스템-구성)
-- [디렉터리 & DB 구성](#디렉터리-&-DB-구성)
+- [디렉터리 & DB 구성](#디렉터리&DB-구성)
 - [서비스 개요](#서비스-개요)
 - [성능 테스트 결과](#성능-테스트-결과)
 - [api](#api)
@@ -41,7 +41,7 @@
 ![l3](https://github.com/user-attachments/assets/08042ac0-bc15-45bf-b23f-6c3c856a85aa)
 ![l4](https://github.com/user-attachments/assets/385be931-ad18-4852-9ba8-61150942416d)
 
-# ▶디렉터리 & DB 구성
+# ▶디렉터리&DB 구성
 | 서버 | 위치 |
 |------|------|
 | User 서버 | https://github.com/TeamLLS/band_user/blob/master/documents/structure.md |
