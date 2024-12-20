@@ -12,6 +12,7 @@
 - [DB 구성](#DB-구성)
 - [서비스 개요](#서비스-개요)
 - [성능 테스트 결과](#성능-테스트-결과)
+- [주요 로직](#주요-로직)
 - [API](#API)
 
 
@@ -113,6 +114,34 @@
 ![n3](https://github.com/user-attachments/assets/1b8c3e67-a6ab-48a6-b0ce-c364909990bf)
 ![n1](https://github.com/user-attachments/assets/585e577c-29e2-4651-8262-c01195f6bfb3)
 ![n2](https://github.com/user-attachments/assets/f09111a8-d5e5-4e16-9756-a5e1acd8d0d6)
+
+# ▶주요 로직
+
+## ▷로그인
+![bb0](https://github.com/user-attachments/assets/df402ed4-66fc-4d30-b45c-fb2c62eca507)
+```
+api gate way를 이용해 단일 진입점과 통합 인증 처리 제공
+redis에 access token을 저장하고 redis를 이용해 이를 조회하여 접근자 인증을 처리하고 인증 정보 반환
+실제 elb로 요청이 인계될 때 헤더에 접근자 인증 정보 추가
+```
+
+## ▷특정 시점 조회
+![d3](https://github.com/user-attachments/assets/bafef5c6-bc3a-4cf8-a99f-26d7e87b9147)
+```
+db 데이터가 갱신될 때 이벤트와 스냅샷을 저장 
+최신 데이터 조회 시에 리드 모델을 반환
+이전 데이터 조회 시에 그 이전 최신 스냅샷과 그 이후 이벤트들을 합산하여 반환 
+```
+
+## ▷서버 간 통신
+![bb2](https://github.com/user-attachments/assets/97b62b88-2f2d-477f-a2e0-c81f263711df)
+```
+데이터 변경이 필요한 요청의 경우 club 서버에서 접근자의 회원 검증 후, 회원 정보와 함께 요청을 mq로 전달
+대상 서버는 mq로 부터 받은 요청을 처리 후 생성된 이벤트를 db에 저장 후 mq로 전달
+data 서버는 mq로 부터 받은 이벤트를 카운팅하여 합산 데이터를 저장, 후에 통계 데이터 조회시 반환
+인증이 필요없는 get 요청의 경우 조회 데이터가 있는 서버로 바로 라우팅  
+```
+
 
 # ▶API
 | 서버 | 위치 |
