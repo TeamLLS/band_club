@@ -44,5 +44,18 @@
 
 
 # 서비스 개요 
+## 0. 주요기능
+![l1](https://github.com/user-attachments/assets/138596d8-4d9a-4aab-87e9-ac56282a5e73)
+
+
+# api
+| 서버 | 위치 |
+|------|------|
+| User 서버 | https://github.com/TeamLLS/band_user/blob/master/documents/api.md |
+| Club 서버 | https://github.com/TeamLLS/band_club/blob/master/documents/api.md |
+| Acrivity 서버 | https://github.com/TeamLLS/band_activity/blob/master/documents/api.md |
+| Budget 서버 | https://github.com/TeamLLS/band_budget/blob/master/documents/api.md |
+| Community 서버 | https://github.com/TeamLLS/band_community/blob/master/documents/api.md |
+| Data 서버 | https://github.com/TeamLLS/band_data/blob/master/documents/api.md |
 
 
