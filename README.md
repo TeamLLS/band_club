@@ -1,7 +1,7 @@
-# ▶ 동아리 관리 서비스: MyZone
+# ▶동아리 관리 서비스: MyZone
 ![1734664390048](https://github.com/user-attachments/assets/4cff46a7-13a2-410c-a65c-7a3ce7e287ab)
 
-# ▶ 목차 
+# ▶목차 
 - [기술](#기술)
 - [시스템 구성](#시스템-구성)
 - [디렉터리 & DB 구성](#디렉터리-&-DB-구성)
@@ -10,7 +10,7 @@
 - [api](#api)
 
 
-# ▶ 기술
+# ▶기술
 ```
 - jdk 17: 개발 환경
 
@@ -33,7 +33,7 @@
 - aws s3 bucket: 이미지 저장소
 ```
 
-# ▶ 시스템 구성
+# ▶시스템 구성
 ![l5](https://github.com/user-attachments/assets/d75e3e2c-9008-40be-ab35-7671e3d14114)
 
 ---------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
 ![l3](https://github.com/user-attachments/assets/08042ac0-bc15-45bf-b23f-6c3c856a85aa)
 ![l4](https://github.com/user-attachments/assets/385be931-ad18-4852-9ba8-61150942416d)
 
-# ▶ 디렉터리 & DB 구성
+# ▶디렉터리 & DB 구성
 | 서버 | 위치 |
 |------|------|
 | User 서버 | https://github.com/TeamLLS/band_user/blob/master/documents/structure.md |
@@ -52,7 +52,7 @@
 | Data 서버 | https://github.com/TeamLLS/band_data/blob/master/documents/structure.md |
 
 
-# ▶ 서비스 개요 
+# ▶서비스 개요 
 ## 0. 기능 요약
 ![l1](https://github.com/user-attachments/assets/138596d8-4d9a-4aab-87e9-ac56282a5e73)
 
@@ -104,12 +104,12 @@
 - 회원별 최근 3개월 통계 합산
 ```
 
-# ▶ 성능 테스트 결과
+# ▶성능 테스트 결과
 ![n3](https://github.com/user-attachments/assets/1b8c3e67-a6ab-48a6-b0ce-c364909990bf)
 ![n1](https://github.com/user-attachments/assets/585e577c-29e2-4651-8262-c01195f6bfb3)
 ![n2](https://github.com/user-attachments/assets/f09111a8-d5e5-4e16-9756-a5e1acd8d0d6)
 
-# ▶ api
+# ▶api
 | 서버 | 위치 |
 |------|------|
 | User 서버 | https://github.com/TeamLLS/band_user/blob/master/documents/api.md |
