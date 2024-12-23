@@ -11,7 +11,7 @@
 - [시스템 구성](#시스템-구성)
 - [DB 구성](#DB-구성)
 - [서비스 개요](#서비스-개요)
-- [성능 테스트 결과](#성능-테스트-결과)
+- [성능 테스트](#성능-테스트)
 - [주요 로직](#주요-로직)
 - [API](#API)
 
@@ -110,7 +110,7 @@
 - 회원별 최근 3개월 통계 합산
 ```
 
-# ▶성능 테스트 결과
+# ▶성능 테스트
 ![n3](https://github.com/user-attachments/assets/1b8c3e67-a6ab-48a6-b0ce-c364909990bf)
 ![n1](https://github.com/user-attachments/assets/585e577c-29e2-4651-8262-c01195f6bfb3)
 ![n2](https://github.com/user-attachments/assets/f09111a8-d5e5-4e16-9756-a5e1acd8d0d6)
