@@ -121,7 +121,7 @@
 ![bb0](https://github.com/user-attachments/assets/df402ed4-66fc-4d30-b45c-fb2c62eca507)
 ```
 api gate way를 이용해 단일 진입점과 통합 인증 처리 제공
-redis에 access token을 저장하고 redis를 이용해 이를 조회하여 접근자 인증을 처리하고 인증 정보 반환
+redis를 이용해 access token을 저장하고 이를 조회하여 접근자 인증을 처리, 인증 정보 반환
 실제 elb로 요청이 인계될 때 헤더에 접근자 인증 정보 추가
 ```
 
