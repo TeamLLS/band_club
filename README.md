@@ -22,7 +22,9 @@
 
 - spring boot 3.3.x: 개발 프레임 워크
 
-- mysql: 서버 db 
+- mysql: 서버 db
+
+- kafka: 메시징 미들웨어 
 
 - aws ec2, docker: 서버 배포 
 
