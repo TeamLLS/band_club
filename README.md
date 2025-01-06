@@ -80,7 +80,7 @@
 - 참가 여부 변경 및 참가자 표시
 ```
 
-## 3. 모임 내 활동 관리
+## 3. 게시글, 댓글 작성
 ![c3](https://github.com/user-attachments/assets/996a4ee8-2f00-4b25-98ff-a60acddad110)
 ```
 - 회원 조회 및 추가
